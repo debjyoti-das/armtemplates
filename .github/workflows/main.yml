@@ -29,3 +29,4 @@ jobs:
           region: eastus
           template: newaksdeploy.json # aks deployment
           parameters: newaksdeploy.parameters.json # aks deployment parameter
+          deploymentName: updatedaksdeploy

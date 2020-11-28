@@ -88,6 +88,44 @@
                 "description": "Boolean flag to turn on and off Azure Policy addon."
             }
         },
+        "enableOmsAgent": {
+            "type": "bool",
+            "defaultValue": true,
+            "metadata": {
+                "description": "Boolean flag to turn on and off omsagent addon."
+            }
+        },
+        "workspaceRegion": {
+            "type": "string",
+            "defaultValue": "East US",
+            "metadata": {
+                "description": "Specify the region for your OMS workspace."
+            }
+        },
+        "workspaceName": {
+            "type": "string",
+            "metadata": {
+                "description": "Specify the name of the OMS workspace."
+            }
+        },
+        "omsWorkspaceId": {
+            "type": "string",
+            "metadata": {
+                "description": "Specify the resource id of the OMS workspace."
+            }
+        },
+        "omsSku": {
+            "type": "string",
+            "defaultValue": "standalone",
+            "allowedValues": [
+                "free",
+                "standalone",
+                "pernode"
+            ],
+            "metadata": {
+                "description": "Select the SKU for your workspace."
+            }
+        },
         "acrName": {
             "type": "string",
             "metadata": {
@@ -111,7 +149,9 @@
     "resources": [
         {
             "apiVersion": "2020-03-01",
-            "dependsOn": [],
+            "dependsOn": [
+                "[concat('Microsoft.Resources/deployments/', 'WorkspaceDeployment-20201128172010')]"
+            ],
             "type": "Microsoft.ContainerService/managedClusters",
             "location": "[parameters('location')]",
             "name": "[parameters('resourceName')]",
@@ -123,13 +163,13 @@
                     {
                         "name": "agentpool",
                         "osDiskSizeGB": "[parameters('osDiskSizeGB')]",
-                        "count": 1,
+                        "count": 2,
                         "vmSize": "Standard_DS2_v2",
                         "osType": "Linux",
                         "storageProfile": "ManagedDisks",
                         "type": "VirtualMachineScaleSets",
                         "mode": "System",
-                        "maxPods": 50,
+                        "maxPods": 110,
                         "availabilityZones": [
                             "1",
                             "2",
@@ -150,6 +190,12 @@
                     },
                     "azurePolicy": {
                         "enabled": "[parameters('enableAzurePolicy')]"
+                    },
+                    "omsagent": {
+                        "enabled": "[parameters('enableOmsAgent')]",
+                        "config": {
+                            "logAnalyticsWorkspaceResourceID": "[parameters('omsWorkspaceId')]"
+                        }
                     }
                 }
             },
@@ -159,13 +205,78 @@
             }
         },
         {
-            "name": "ConnectAKStoACR-b2a206de-acd8-4aea-97a8-41561317605b",
+            "type": "Microsoft.Resources/deployments",
+            "name": "SolutionDeployment-20201128172010",
+            "apiVersion": "2017-05-10",
+            "resourceGroup": "[split(parameters('omsWorkspaceId'),'/')[4]]",
+            "subscriptionId": "[split(parameters('omsWorkspaceId'),'/')[2]]",
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {},
+                    "variables": {},
+                    "resources": [
+                        {
+                            "apiVersion": "2015-11-01-preview",
+                            "type": "Microsoft.OperationsManagement/solutions",
+                            "location": "[parameters('workspaceRegion')]",
+                            "name": "[concat('ContainerInsights', '(', split(parameters('omsWorkspaceId'),'/')[8], ')')]",
+                            "properties": {
+                                "workspaceResourceId": "[parameters('omsWorkspaceId')]"
+                            },
+                            "plan": {
+                                "name": "[concat('ContainerInsights', '(', split(parameters('omsWorkspaceId'),'/')[8], ')')]",
+                                "product": "[concat('OMSGallery/', 'ContainerInsights')]",
+                                "promotionCode": "",
+                                "publisher": "Microsoft"
+                            }
+                        }
+                    ]
+                }
+            },
+            "dependsOn": [
+                "[concat('Microsoft.Resources/deployments/', 'WorkspaceDeployment-20201128172010')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "name": "WorkspaceDeployment-20201128172010",
+            "apiVersion": "2017-05-10",
+            "resourceGroup": "[split(parameters('omsWorkspaceId'),'/')[4]]",
+            "subscriptionId": "[split(parameters('omsWorkspaceId'),'/')[2]]",
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {},
+                    "variables": {},
+                    "resources": [
+                        {
+                            "apiVersion": "2015-11-01-preview",
+                            "type": "Microsoft.OperationalInsights/workspaces",
+                            "location": "[parameters('workspaceRegion')]",
+                            "name": "[parameters('workspaceName')]",
+                            "properties": {
+                                "sku": {
+                                    "name": "[parameters('omsSku')]"
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "ConnectAKStoACR-94fa0eb8-47c2-4e52-b8c9-9a2782367037",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2017-05-10",
             "resourceGroup": "[parameters('acrResourceGroup')]",
             "dependsOn": [
                 "[concat('Microsoft.ContainerService/managedClusters/', parameters('resourceName'))]",
-                "[concat('Microsoft.Resources/deployments/', 'AcrDeployment-b2a206de-acd8-4aea-97a8-41561317605c')]"
+                "[concat('Microsoft.Resources/deployments/', 'AcrDeployment-94fa0eb8-47c2-4e52-b8c9-9a2782367038')]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -189,11 +300,11 @@
             }
         },
         {
-            "name": "AcrDeployment-b2a206de-acd8-4aea-97a8-41561317605c",
+            "name": "AcrDeployment-94fa0eb8-47c2-4e52-b8c9-9a2782367038",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2017-05-10",
-            "subscriptionId": "6a338577-6d71-4d81-a2fc-72f3e6add8ec",
-            "resourceGroup": "mynewAKSRG",
+            "subscriptionId": "e4c51041-6982-4771-ad5e-fcea810fe303",
+            "resourceGroup": "mynewdevopsvm",
             "properties": {
                 "mode": "Incremental",
                 "template": {
@@ -203,8 +314,8 @@
                         {
                             "type": "Microsoft.ContainerRegistry/registries",
                             "apiVersion": "2019-05-01",
-                            "name": "myacrpkb",
-                            "location": "westeurope",
+                            "name": "devopsforyou",
+                            "location": "eastus",
                             "sku": {
                                 "name": "Standard"
                             },
@@ -215,6 +326,37 @@
                     ]
                 }
             }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "name": "ClusterMonitoringMetricPulisherRoleAssignmentDepl-20201128172010",
+            "apiVersion": "2017-05-10",
+            "resourceGroup": "mynewdevopsvm",
+            "subscriptionId": "e4c51041-6982-4771-ad5e-fcea810fe303",
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {},
+                    "variables": {},
+                    "resources": [
+                        {
+                            "type": "Microsoft.ContainerService/managedClusters/providers/roleAssignments",
+                            "apiVersion": "2018-01-01-preview",
+                            "name": "devopsforyou/Microsoft.Authorization/53c7a6ab-5847-4ff2-b7d0-ac48de6a3d20",
+                            "properties": {
+                                "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '3913510d-42f4-4e42-8a64-420c390055eb')]",
+                                "principalId": "[reference(parameters('resourceName')).addonProfiles.omsagent.identity.objectId]",
+                                "scope": "/subscriptions/e4c51041-6982-4771-ad5e-fcea810fe303/resourceGroups/mynewdevopsvm/providers/Microsoft.ContainerService/managedClusters/devopsforyou"
+                            }
+                        }
+                    ]
+                }
+            },
+            "dependsOn": [
+                "/subscriptions/e4c51041-6982-4771-ad5e-fcea810fe303/resourceGroups/mynewdevopsvm/providers/Microsoft.ContainerService/managedClusters/devopsforyou"
+            ]
         }
     ],
     "outputs": {

@@ -26,6 +26,6 @@ jobs:
           scope: subscription
           subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
           resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP }}
-          region: westeurope
+          region: eastus
           template: azurevmdeploy.json
           parameters: azurevmdeploy.parameters.json

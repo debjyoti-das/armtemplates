@@ -3,16 +3,16 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "resourceName": {
-            "value": "devopsinaksforyou"
+            "value": "newaksdevopsforyou"
         },
         "location": {
-            "value": "westeurope"
+            "value": "eastus"
         },
         "dnsPrefix": {
-            "value": "devopsinaksforyou-dns"
+            "value": "newaksdevopsforyou-dns"
         },
         "kubernetesVersion": {
-            "value": "1.18.10"
+            "value": "1.17.13"
         },
         "networkPlugin": {
             "value": "kubenet"
@@ -24,7 +24,7 @@
             "value": false
         },
         "enableHttpApplicationRouting": {
-            "value": false
+            "value": true
         },
         "enableAzurePolicy": {
             "value": false
@@ -32,11 +32,20 @@
         "vmssNodePool": {
             "value": true
         },
+        "workspaceName": {
+            "value": "DefaultWorkspace-e4c51041-6982-4771-ad5e-fcea810fe303-EUS"
+        },
+        "omsWorkspaceId": {
+            "value": "/subscriptions/e4c51041-6982-4771-ad5e-fcea810fe303/resourceGroups/DefaultResourceGroup-EUS/providers/Microsoft.OperationalInsights/workspaces/DefaultWorkspace-e4c51041-6982-4771-ad5e-fcea810fe303-EUS"
+        },
+        "workspaceRegion": {
+            "value": "eastus"
+        },
         "acrName": {
-            "value": "newacrforyou"
+            "value": "newacrfordevops"
         },
         "acrResourceGroup": {
-            "value": "devopsforyou"
+            "value": "newdevopsforyou"
         }
     }
 }

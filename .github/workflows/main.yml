@@ -6,7 +6,7 @@ on:
       - main
 env:
   AZURE_SUBSCRIPTION_ID: e4c51041-6982-4771-ad5e-fcea810fe303   # set this to your Azure Subscription Id
-  AZURE_RESOURCE_GROUP: devopsforyou   # set this to your target resource group
+  AZURE_RESOURCE_GROUP: DefaultResourceGroup-WEU   # set this to your target resource group
 
 jobs:
   deploy-virtual-network-template:

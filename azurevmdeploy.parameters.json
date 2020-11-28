@@ -77,7 +77,7 @@
             "value": "testvm"
         },
         "adminPassword": {
-            "value": null
+            "value": "testvm@123456"
         }
     }
 }

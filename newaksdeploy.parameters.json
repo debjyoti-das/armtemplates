@@ -6,13 +6,13 @@
             "value": "devopsinaksforyou"
         },
         "location": {
-            "value": "eastus"
+            "value": "westeurope"
         },
         "dnsPrefix": {
             "value": "devopsinaksforyou-dns"
         },
         "kubernetesVersion": {
-            "value": "1.17.13"
+            "value": "1.18.10"
         },
         "networkPlugin": {
             "value": "kubenet"
@@ -24,7 +24,7 @@
             "value": false
         },
         "enableHttpApplicationRouting": {
-            "value": true
+            "value": false
         },
         "enableAzurePolicy": {
             "value": false
@@ -33,19 +33,19 @@
             "value": true
         },
         "workspaceName": {
-            "value": "DefaultWorkspace-e4c51041-6982-4771-ad5e-fcea810fe303-EUS"
+            "value": "DefaultWorkspace-e4c51041-6982-4771-ad5e-fcea810fe303-WEU"
         },
         "omsWorkspaceId": {
-            "value": "/subscriptions/e4c51041-6982-4771-ad5e-fcea810fe303/resourceGroups/DefaultResourceGroup-EUS/providers/Microsoft.OperationalInsights/workspaces/DefaultWorkspace-e4c51041-6982-4771-ad5e-fcea810fe303-EUS"
+            "value": "/subscriptions/e4c51041-6982-4771-ad5e-fcea810fe303/resourceGroups/DefaultResourceGroup-WEU/providers/Microsoft.OperationalInsights/workspaces/DefaultWorkspace-e4c51041-6982-4771-ad5e-fcea810fe303-WEU"
         },
         "workspaceRegion": {
-            "value": "eastus"
+            "value": "westeurope"
         },
         "acrName": {
-            "value": "devopsforyou"
+            "value": "newacrforyou"
         },
         "acrResourceGroup": {
-            "value": "mynewdevopsvm"
+            "value": "devopsforyou"
         }
     }
 }

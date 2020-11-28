@@ -3,13 +3,13 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "resourceName": {
-            "value": "devopsforyou"
+            "value": "devopsinaksforyou"
         },
         "location": {
             "value": "eastus"
         },
         "dnsPrefix": {
-            "value": "devopsforyou-dns"
+            "value": "devopsinaksforyou-dns"
         },
         "kubernetesVersion": {
             "value": "1.17.13"

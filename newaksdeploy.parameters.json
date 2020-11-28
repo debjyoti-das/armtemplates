@@ -32,15 +32,6 @@
         "vmssNodePool": {
             "value": true
         },
-        "workspaceName": {
-            "value": "DefaultWorkspace-e4c51041-6982-4771-ad5e-fcea810fe303-WEU"
-        },
-        "omsWorkspaceId": {
-            "value": "/subscriptions/e4c51041-6982-4771-ad5e-fcea810fe303/resourceGroups/DefaultResourceGroup-WEU/providers/Microsoft.OperationalInsights/workspaces/DefaultWorkspace-e4c51041-6982-4771-ad5e-fcea810fe303-WEU"
-        },
-        "workspaceRegion": {
-            "value": "westeurope"
-        },
         "acrName": {
             "value": "newacrforyou"
         },

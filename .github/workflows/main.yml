@@ -3,7 +3,7 @@ name: Deploy ARM Template
 on:
   push:
     branches:
-      - master
+      - main
 env:
   AZURE_SUBSCRIPTION_ID: e4c51041-6982-4771-ad5e-fcea810fe303   # set this to your Azure Subscription Id
   AZURE_RESOURCE_GROUP: mynewdevopsvm   # set this to your target resource group

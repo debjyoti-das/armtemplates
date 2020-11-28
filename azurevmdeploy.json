@@ -59,7 +59,7 @@
     },
     "location": {
       "type": "string",
-      "defaultValue": "[resourceGroup().location]",
+      "defaultValue": "westeurope",
       "metadata": {
         "description": "Location for all resources."
       }
@@ -74,7 +74,7 @@
     },
     "functions": [],
     "variables": {
-    "storageAccountName": "[concat('bootdiags', uniquestring(resourceGroup().id))]",
+    "storageAccountName": "[concat('bootdiags', 'mynewdevopsvm')]",
     "nicName": "myVMNic",
     "addressPrefix": "10.0.0.0/16",
     "subnetName": "Subnet",

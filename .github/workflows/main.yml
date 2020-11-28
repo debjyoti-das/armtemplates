@@ -28,4 +28,4 @@ jobs:
           resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP }}
           region: eastus
           template: newaksdeploy.json # aks deployment
-          parameters: newaksdeploy.parameters.json
+          parameters: newaksdeploy.parameters.json # aks deployment parameter

@@ -1,33 +1,83 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "adminUsername": {
-            "value": "mynewvmfordevops"
+        "location": {
+            "value": "eastus"
         },
-        "adminPassword": {
-            "value": "mynewvmfordevops@123"
+        "networkInterfaceName": {
+            "value": "testnewvm900"
         },
-        "dnsLabelPrefix": {
-            "value": "iamkubernetes1983vm" 
+        "networkSecurityGroupName": {
+            "value": "testnewvm-nsg"
         },
-        "publicIpName": {
-            "value": "myPublicIP"
+        "networkSecurityGroupRules": {
+            "value": [
+                {
+                    "name": "SSH",
+                    "properties": {
+                        "priority": 300,
+                        "protocol": "TCP",
+                        "access": "Allow",
+                        "direction": "Inbound",
+                        "sourceAddressPrefix": "*",
+                        "sourcePortRange": "*",
+                        "destinationAddressPrefix": "*",
+                        "destinationPortRange": "22"
+                    }
+                }
+            ]
         },
-        "publicIPAllocationMethod": {
-            "value": "Static"
+        "subnetName": {
+            "value": "default"
         },
-        "publicIpSku": {
+        "virtualNetworkName": {
+            "value": "mynewdevopsvm-vnet"
+        },
+        "addressPrefixes": {
+            "value": [
+                "10.0.0.0/24"
+            ]
+        },
+        "subnets": {
+            "value": [
+                {
+                    "name": "default",
+                    "properties": {
+                        "addressPrefix": "10.0.0.0/24"
+                    }
+                }
+            ]
+        },
+        "publicIpAddressName": {
+            "value": "testnewvm-ip"
+        },
+        "publicIpAddressType": {
+            "value": "Dynamic"
+        },
+        "publicIpAddressSku": {
             "value": "Basic"
         },
-        "vmSize": {
+        "virtualMachineName": {
+            "value": "testnewvm"
+        },
+        "virtualMachineComputerName": {
+            "value": "testnewvm"
+        },
+        "virtualMachineRG": {
+            "value": "mynewdevopsvm"
+        },
+        "osDiskType": {
+            "value": "Premium_LRS"
+        },
+        "virtualMachineSize": {
             "value": "Standard_D2s_v3"
         },
-        "location": {
-            "value": "westeurope"
+        "adminUsername": {
+            "value": "testvm"
         },
-        "vmName": {
-            "value": "iamkubernetes"
+        "adminPassword": {
+            "value": null
         }
     }
 }

@@ -3,10 +3,10 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "adminUsername": {
-            "value": "mynewvmforaks"
+            "value": "mynewvmfordevops"
         },
         "adminPassword": {
-            "value": "mynewvmforaks@123"
+            "value": "mynewvmfordevops@123"
         },
         "dnsLabelPrefix": {
             "value": "iamkubernetes1983vm" 

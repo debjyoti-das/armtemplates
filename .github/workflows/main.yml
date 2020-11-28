@@ -26,5 +26,6 @@ jobs:
           scope: subscription
           subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
           resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP }}
+          region: westeurope
           template: $GITHUB_WORKSPACE/azurevmdeploy.json
           parameters: $GITHUB_WORKSPACE/azurevmdeploy.parameters.json

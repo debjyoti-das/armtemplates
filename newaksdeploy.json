@@ -159,13 +159,12 @@
             }
         },
         {
-            "name": "ConnectAKStoACR-747afe5d-d8a4-4c45-bea3-2c4ef363703f",
+            "name": "ConnectAKStoACR-2900e09e-8de1-4f47-86eb-a227d9cb5024",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2017-05-10",
             "resourceGroup": "[parameters('acrResourceGroup')]",
             "dependsOn": [
-                "[concat('Microsoft.ContainerService/managedClusters/', parameters('resourceName'))]",
-                "[concat('Microsoft.Resources/deployments/', 'AcrDeployment-747afe5d-d8a4-4c45-bea3-2c4ef3637040')]"
+                "[concat('Microsoft.ContainerService/managedClusters/', parameters('resourceName'))]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -182,34 +181,6 @@
                                 "principalType": "ServicePrincipal",
                                 "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
                                 "scope": "[resourceId(parameters('acrResourceGroup'),'Microsoft.ContainerRegistry/registries/', parameters('acrName'))]"
-                            }
-                        }
-                    ]
-                }
-            }
-        },
-        {
-            "name": "AcrDeployment-747afe5d-d8a4-4c45-bea3-2c4ef3637040",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2017-05-10",
-            "subscriptionId": "e4c51041-6982-4771-ad5e-fcea810fe303",
-            "resourceGroup": "devopsforyou",
-            "properties": {
-                "mode": "Incremental",
-                "template": {
-                    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-                    "contentVersion": "1.0.0.0",
-                    "resources": [
-                        {
-                            "type": "Microsoft.ContainerRegistry/registries",
-                            "apiVersion": "2019-05-01",
-                            "name": "newacrforyou",
-                            "location": "westeurope",
-                            "sku": {
-                                "name": "Standard"
-                            },
-                            "properties": {
-                                "adminUserEnabled": false
                             }
                         }
                     ]

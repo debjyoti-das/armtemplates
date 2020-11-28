@@ -150,7 +150,7 @@
         {
             "apiVersion": "2020-03-01",
             "dependsOn": [
-                "[concat('Microsoft.Resources/deployments/', 'WorkspaceDeployment-20201128180950')]"
+                "[concat('Microsoft.Resources/deployments/', 'WorkspaceDeployment-20201128182133')]"
             ],
             "type": "Microsoft.ContainerService/managedClusters",
             "location": "[parameters('location')]",
@@ -206,7 +206,7 @@
         },
         {
             "type": "Microsoft.Resources/deployments",
-            "name": "SolutionDeployment-20201128180950",
+            "name": "SolutionDeployment-20201128182133",
             "apiVersion": "2017-05-10",
             "resourceGroup": "[split(parameters('omsWorkspaceId'),'/')[4]]",
             "subscriptionId": "[split(parameters('omsWorkspaceId'),'/')[2]]",
@@ -237,12 +237,12 @@
                 }
             },
             "dependsOn": [
-                "[concat('Microsoft.Resources/deployments/', 'WorkspaceDeployment-20201128180950')]"
+                "[concat('Microsoft.Resources/deployments/', 'WorkspaceDeployment-20201128182133')]"
             ]
         },
         {
             "type": "Microsoft.Resources/deployments",
-            "name": "WorkspaceDeployment-20201128180950",
+            "name": "WorkspaceDeployment-20201128182133",
             "apiVersion": "2017-05-10",
             "resourceGroup": "[split(parameters('omsWorkspaceId'),'/')[4]]",
             "subscriptionId": "[split(parameters('omsWorkspaceId'),'/')[2]]",
@@ -270,12 +270,13 @@
             }
         },
         {
-            "name": "ConnectAKStoACR-94fa0eb8-47c2-4e52-b8c9-9a278236709f",
+            "name": "ConnectAKStoACR-747afe5d-d8a4-4c45-bea3-2c4ef363702b",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2017-05-10",
             "resourceGroup": "[parameters('acrResourceGroup')]",
             "dependsOn": [
-                "[concat('Microsoft.ContainerService/managedClusters/', parameters('resourceName'))]"
+                "[concat('Microsoft.ContainerService/managedClusters/', parameters('resourceName'))]",
+                "[concat('Microsoft.Resources/deployments/', 'AcrDeployment-747afe5d-d8a4-4c45-bea3-2c4ef363702c')]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -299,10 +300,38 @@
             }
         },
         {
+            "name": "AcrDeployment-747afe5d-d8a4-4c45-bea3-2c4ef363702c",
             "type": "Microsoft.Resources/deployments",
-            "name": "ClusterMonitoringMetricPulisherRoleAssignmentDepl-20201128180950",
             "apiVersion": "2017-05-10",
-            "resourceGroup": "mynewdevopsvm",
+            "subscriptionId": "e4c51041-6982-4771-ad5e-fcea810fe303",
+            "resourceGroup": "devopsforyou",
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "resources": [
+                        {
+                            "type": "Microsoft.ContainerRegistry/registries",
+                            "apiVersion": "2019-05-01",
+                            "name": "newacrforyou",
+                            "location": "westeurope",
+                            "sku": {
+                                "name": "Standard"
+                            },
+                            "properties": {
+                                "adminUserEnabled": false
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "name": "ClusterMonitoringMetricPulisherRoleAssignmentDepl-20201128182133",
+            "apiVersion": "2017-05-10",
+            "resourceGroup": "devopsforyou",
             "subscriptionId": "e4c51041-6982-4771-ad5e-fcea810fe303",
             "properties": {
                 "mode": "Incremental",
@@ -315,18 +344,18 @@
                         {
                             "type": "Microsoft.ContainerService/managedClusters/providers/roleAssignments",
                             "apiVersion": "2018-01-01-preview",
-                            "name": "devopsinaksforyou/Microsoft.Authorization/e94f98b3-ee45-4385-86a7-d1a6b30f2fb8",
+                            "name": "devopsinaksforyou/Microsoft.Authorization/27648e2e-bdf2-4c14-ab69-2ea4780fc28f",
                             "properties": {
                                 "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '3913510d-42f4-4e42-8a64-420c390055eb')]",
                                 "principalId": "[reference(parameters('resourceName')).addonProfiles.omsagent.identity.objectId]",
-                                "scope": "/subscriptions/e4c51041-6982-4771-ad5e-fcea810fe303/resourceGroups/mynewdevopsvm/providers/Microsoft.ContainerService/managedClusters/devopsinaksforyou"
+                                "scope": "/subscriptions/e4c51041-6982-4771-ad5e-fcea810fe303/resourceGroups/devopsforyou/providers/Microsoft.ContainerService/managedClusters/devopsinaksforyou"
                             }
                         }
                     ]
                 }
             },
             "dependsOn": [
-                "/subscriptions/e4c51041-6982-4771-ad5e-fcea810fe303/resourceGroups/mynewdevopsvm/providers/Microsoft.ContainerService/managedClusters/devopsinaksforyou"
+                "/subscriptions/e4c51041-6982-4771-ad5e-fcea810fe303/resourceGroups/devopsforyou/providers/Microsoft.ContainerService/managedClusters/devopsinaksforyou"
             ]
         }
     ],
